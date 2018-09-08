@@ -22,11 +22,10 @@ class VoomETL {
     const source = this.etl.connections.source
     const destination = this.etl.connections.destination
 
-    // for (let i in source.tables) {
-    //   let table = source.tables[i]
-    //   this.etl.log({table})
-    //   // await this.copyTable(table)
-    // }
+    for (let i in source.tables) {
+      let table = source.tables[i]
+      await this.etl.copyTable(source, table, destination, table)
+    }
   }
 }
 
