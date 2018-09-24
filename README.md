@@ -2,6 +2,8 @@
 
 I am a very lazy ETL tool.
 
+[![CircleCI](https://circleci.com/gh/evantahler/etl.svg?style=svg&circle-token=fd0f461c1b9af93c35fdb6fbdcf2285133bddd84)](https://circleci.com/gh/evantahler/etl)
+
 1. I will copy over all rows from DB `source` to DB `destination.tmp`
   a. If a table has an `updated_at`, I'll load in all data from the last time I ran
   b. If a table doesn't have an `updated_at`, I'll replace the whole table
