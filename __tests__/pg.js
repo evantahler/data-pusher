@@ -33,4 +33,24 @@ describe('specHelper', async () => {
     let usersCount = await helper.connections.source.count('users')
     expect(usersCount).toEqual(3)
   })
+
+  describe('#readFullTable', () => {
+    beforeAll(() => { helper.connections.source.chunkSize = 2 })
+    afterAll(() => { helper.connections.source.chunkSize = 1000 })
+
+    test('reads in batches', async () => {
+      let timesHandled = 0
+      let totalRows = []
+      const handler = (rows) => {
+        timesHandled++
+        totalRows = totalRows.concat(rows)
+      }
+
+      await helper.connections.source.readFullTable('users', handler)
+
+      expect(timesHandled).toBe(3)
+      expect(totalRows.length).toBe(3)
+      expect(totalRows[0].first_name).toBe('Evan')
+    })
+  })
 })
