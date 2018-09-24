@@ -48,8 +48,12 @@ jobs:
       - run:
           name: display-npm-version
           command: npm --version
-      - run: createdb test_source
-      - run: createdb test_datawarehouse
+      - run:
+          name: Setup PSQL Databases
+          command: |
+            sudo apt install -y postgresql-client
+            createdb test_source
+            createdb test_datawarehouse
       - run:
           name: test-reporter-setup
           command: mkdir ./junit
