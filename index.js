@@ -34,4 +34,4 @@ class VoomETL {
 (async function () {
   const voomETLInstance = new VoomETL()
   await voomETLInstance.run()
-}());
+}())

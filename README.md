@@ -8,9 +8,12 @@ I am a very lazy ETL tool.
 2. I'll run any SQL statements in the `transformations` directory of this project on `destination.tmp`
 3. I'll move `destination.tmp` to `destination`
 
----
+## Setup
+* Copy `.env.example` to `.env` and be sure you have access to those databases
+* run me via `npm start`
+* test me via `npm test`
 
-Notes:
+## Notes:
 
-* I only speak Postgess
+* I only speak Postgress
 * I only log to STDERR and STDOUT

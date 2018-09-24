@@ -1,0 +1,4 @@
+id, name, vendor, created_at, updated_at
+1, awesome apple, alice apple co, 2018-01-01 01:01:01, 2018-01-01 01:01:01
+2, brilliant banana, bob's banana boat, 2018-02-02 02:02:02, 2018-02-02 01:02:02
+3, cool cookie, cathy cookie company, 2018-03-03 03:03:03, 2018-03-03 01:03:03
