@@ -19,7 +19,8 @@ describe('specHelper', async () => {
   describe('#max', async () => {
     test('table with updated_at', async () => {
       const max = await helper.connections.source.max('users')
-      expect(max.getTime()).toEqual(1520074983000)
+      expect(max.getTime()).toBeGreaterThanOrEqual(1520046183000)
+      expect(max.getTime()).toBeLessThanOrEqual(1520074983000)
     })
 
     test('table without updated_at', async () => {
