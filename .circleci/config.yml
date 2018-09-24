@@ -39,7 +39,7 @@ jobs:
       - image: circleci/node:8
       - image: circleci/postgres:9.6.2-alpine
         environment:
-          POSTGRES_USER: dbuser
+          POSTGRES_USER: circleci
           POSTGRES_DB: _
     steps:
       - checkout
@@ -55,8 +55,8 @@ jobs:
           name: Setup PSQL Databases
           command: |
             sudo apt install -y postgresql-client
-            createdb -h localhost test_source -O dbuser
-            createdb -h localhost test_datawarehouse -O dbuser
+            createdb -h localhost test_source -O circleci
+            createdb -h localhost test_datawarehouse -O circleci
       - run:
           name: test-reporter-setup
           command: mkdir ./junit
@@ -66,8 +66,8 @@ jobs:
           environment:
             NODE_ENV: test
             JEST_JUNIT_OUTPUT: reports/junit/jest.xml
-            TEST_SOURCE: postgresql://dbuser@localhost:5432/test_source
-            TEST_DESTINATION: postgresql://dbuser@localhost:5432/test_datawarehouse
+            TEST_SOURCE: postgresql://circleci@localhost:5432/test_source
+            TEST_DESTINATION: postgresql://circleci@localhost:5432/test_datawarehouse
           when: always
       - store_test_results:
           path: ./reports/junit/
