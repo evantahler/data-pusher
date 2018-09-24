@@ -55,8 +55,8 @@ jobs:
           name: Setup PSQL Databases
           command: |
             sudo apt install -y postgresql-client
-            createdb test_source
-            createdb test_datawarehouse
+            createdb -h localhost test_source
+            createdb -h localhost test_datawarehouse
       - run:
           name: test-reporter-setup
           command: mkdir ./junit
