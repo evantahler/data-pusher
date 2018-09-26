@@ -21,11 +21,15 @@ class VoomETL {
   async copyAllTables () {
     const source = this.etl.connections.source
     const destination = this.etl.connections.destination
+    let promises = []
 
     for (let i in source.tables) {
       let table = source.tables[i]
-      await this.etl.copyTable(source, table, destination, table)
+      let promise = this.etl.copyTable(source, table, destination, table)
+      promises.push(promise)
     }
+
+    await Promise.all(promises)
   }
 }
 
