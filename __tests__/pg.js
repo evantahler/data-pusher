@@ -122,7 +122,7 @@ describe('specHelper', async () => {
 
     test('#getColumns', async () => {
       let columns = await helper.connections.source.getColumns('users')
-      expect(columns).toEqual(['id', 'email', 'first_name', 'last_name', 'created_at', 'updated_at'])
+      expect(columns).toEqual(['id', 'created_at', 'email', 'first_name', 'last_name', 'updated_at'])
     })
 
     describe('#write', () => {
@@ -170,7 +170,16 @@ describe('specHelper', async () => {
       })
 
       test('it will update items with the same primary key', async () => {
-        throw new Error('todo')
+        await helper.connections.source.write('fish', data)
+        await helper.connections.source.write('fish', [ { id: 1, fish: 'super-salmon' } ])
+
+        let totalRows = []
+        const handler = (rows) => { totalRows = totalRows.concat(rows) }
+        await helper.connections.source.read('fish', handler)
+
+        expect(totalRows.length).toEqual(3)
+        expect(totalRows[0].id).toEqual(1)
+        expect(totalRows[0].fish).toEqual('super-salmon')
       })
     })
   })

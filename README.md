@@ -17,5 +17,5 @@ I am a very lazy ETL tool.
 
 ## Notes:
 
-* I only speak Postgress
+* I only speak Postgres (v9.5+ required for [upserts](https://stackoverflow.com/questions/17267417/how-to-upsert-merge-insert-on-duplicate-update-in-postgresql))
 * I only log to STDERR and STDOUT
