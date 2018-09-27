@@ -1,4 +1,4 @@
 id, email, first_name, last_name, created_at, updated_at
 1, evan@example.com, Evan, Evan, 2018-01-01 01:01:01, 2018-01-01 01:01:01
 2, brian@example.com, Brian, Brian, 2018-02-02 02:02:02, 2018-02-02 02:02:02
-3, molly@example.com, Molly, Molly, 2018-03-03 01:01:01, 2018-03-03 03:03:03
+3, molly@example.com, Molly, Molly, 2018-03-03 03:03:03, 2018-03-03 03:03:03

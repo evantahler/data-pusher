@@ -34,23 +34,42 @@ describe('specHelper', async () => {
     expect(usersCount).toEqual(3)
   })
 
-  describe('#readFullTable', () => {
+  describe('#read', () => {
     beforeAll(() => { helper.connections.source.chunkSize = 2 })
     afterAll(() => { helper.connections.source.chunkSize = 1000 })
+    describe('#readTableSince', () => {
+      test('reads in batches with a since', async () => {
+        let timesHandled = 0
+        let totalRows = []
+        const handler = (rows) => {
+          timesHandled++
+          totalRows = totalRows.concat(rows)
+        }
 
-    test('reads in batches', async () => {
-      let timesHandled = 0
-      let totalRows = []
-      const handler = (rows) => {
-        timesHandled++
-        totalRows = totalRows.concat(rows)
-      }
+        const since = new Date(Date.parse('2018-01-02'))
+        await helper.connections.source.readTableSince('users', handler, since, 'updated_at')
 
-      await helper.connections.source.readFullTable('users', handler)
+        expect(timesHandled).toBe(2)
+        expect(totalRows.length).toBe(2)
+        expect(totalRows[0].first_name).toBe('Brian')
+      })
+    })
 
-      expect(timesHandled).toBe(3)
-      expect(totalRows.length).toBe(3)
-      expect(totalRows[0].first_name).toBe('Evan')
+    describe('#readFullTable', () => {
+      test('reads in batches', async () => {
+        let timesHandled = 0
+        let totalRows = []
+        const handler = (rows) => {
+          timesHandled++
+          totalRows = totalRows.concat(rows)
+        }
+
+        await helper.connections.source.readFullTable('users', handler)
+
+        expect(timesHandled).toBe(3)
+        expect(totalRows.length).toBe(3)
+        expect(totalRows[0].first_name).toBe('Evan')
+      })
     })
   })
 })

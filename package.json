@@ -15,6 +15,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "pg": "^7.4.3",
+    "pg-format": "^1.0.4",
     "winston": "^3.1.0"
   },
   "devDependencies": {
