@@ -37,6 +37,23 @@ describe('specHelper', async () => {
   describe('#read', () => {
     beforeAll(() => { helper.connections.source.chunkSize = 2 })
     afterAll(() => { helper.connections.source.chunkSize = 1000 })
+
+    test('can read tables with updated_at', async () => {
+      let totalRows = []
+      const handler = (rows) => { totalRows = totalRows.concat(rows) }
+
+      await helper.connections.source.read('users', handler)
+      expect(totalRows.length).toEqual(3)
+    })
+
+    test('can read tables without', async () => {
+      let totalRows = []
+      const handler = (rows) => { totalRows = totalRows.concat(rows) }
+
+      await helper.connections.source.read('carts', handler)
+      expect(totalRows.length).toEqual(3)
+    })
+
     describe('#readTableSince', () => {
       test('reads in batches with a since', async () => {
         let timesHandled = 0
@@ -69,6 +86,91 @@ describe('specHelper', async () => {
         expect(timesHandled).toBe(3)
         expect(totalRows.length).toBe(3)
         expect(totalRows[0].first_name).toBe('Evan')
+      })
+    })
+
+    describe('#ensureTable', async () => {
+      afterEach(async () => { await helper.connections.source.dropTable('fish') })
+
+      test('it will create a missing table', async () => {
+        await helper.connections.source.ensureTable('fish')
+        let tables = await helper.connections.source.queryTables()
+        expect(tables).toContain('fish')
+      })
+
+      test('it will not blow up if the table exists already', async () => {
+        // do it 2x
+        await helper.connections.source.ensureTable('fish')
+        await helper.connections.source.ensureTable('fish')
+      })
+    })
+
+    describe('#dropTable', () => {
+      afterEach(async () => { await helper.connections.source.dropTable('fish') })
+
+      test('it will drop a table', async () => {
+        await helper.connections.source.ensureTable('fish')
+        await helper.connections.source.dropTable('fish')
+        let tables = await helper.connections.source.queryTables()
+        expect(tables).not.toContain('fish')
+      })
+
+      test('it will throw if the table does not exist', async () => {
+        await helper.connections.source.dropTable('fish')
+      })
+    })
+
+    test('#getColumns', async () => {
+      let columns = await helper.connections.source.getColumns('users')
+      expect(columns).toEqual(['id', 'email', 'first_name', 'last_name', 'created_at', 'updated_at'])
+    })
+
+    describe('#write', () => {
+      const data = [
+        {
+          id: 1,
+          fish: 'salmon',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          id: 2,
+          fish: 'tuna',
+          created_at: new Date(),
+          updated_at: new Date()
+        },
+        {
+          id: 3,
+          fish: 'cod',
+          created_at: new Date(),
+          updated_at: new Date()
+        }
+      ]
+
+      afterEach(async () => { await helper.connections.source.dropTable('fish') })
+
+      test('it will create a new table', async () => {
+        await helper.connections.source.write('fish', data)
+        let tables = await helper.connections.source.queryTables()
+        expect(tables).toContain('fish')
+      })
+
+      test('it will add coumns of the proper type', async () => {
+        await helper.connections.source.write('fish', data)
+
+        let totalRows = []
+        const handler = (rows) => { totalRows = totalRows.concat(rows) }
+        await helper.connections.source.read('fish', handler)
+
+        expect(totalRows.length).toEqual(3)
+        expect(totalRows[0].id).toEqual(1)
+        expect(totalRows[0].fish).toEqual('salmon')
+        expect(totalRows[0].created_at.getTime()).toEqual(totalRows[0].updated_at.getTime())
+        expect(totalRows[0].created_at.getTime()).toEqual(totalRows[1].created_at.getTime())
+      })
+
+      test('it will update items with the same primary key', async () => {
+        throw new Error('todo')
       })
     })
   })
