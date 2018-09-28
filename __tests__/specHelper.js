@@ -40,8 +40,11 @@ module.exports = class SpecHelper {
 
   async seedTableFromCsv (file) {
     let tableName = file.split('.')[0]
+    const handler = async (data) => {
+      await this.connections.source.write(tableName, data)
+    }
+
     await this.connections.source.dropTable(tableName)
-    const data = this.csv.parse(path.join(__dirname, 'seeds', file))
-    await this.connections.source.write(tableName, data)
+    await this.csv.read(path.join(__dirname, 'seeds', file), handler)
   }
 }

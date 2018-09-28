@@ -1,7 +1,7 @@
 const SpecHelper = require('./specHelper')
 const helper = new SpecHelper()
 
-describe('specHelper', async () => {
+describe('pg', async () => {
   beforeAll(async () => { await helper.connect() })
   beforeAll(async () => { await helper.seed() })
   afterAll(async () => { await helper.end() })
