@@ -1,4 +1,4 @@
-const SpecHelper = require('./specHelper')
+const SpecHelper = require('./../specHelper')
 const helper = new SpecHelper()
 
 describe('pg', async () => {

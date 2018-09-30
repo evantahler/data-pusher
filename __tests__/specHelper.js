@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-const CSV = require('./../lib/csv')
-const PG = require('./../lib/pg')
+const CSV = require('./../lib/connections/csv')
+const PG = require('./../lib/connections/pg')
 
 const fsReaddirAsync = async (p) => {
   return new Promise((resolve, reject) => {

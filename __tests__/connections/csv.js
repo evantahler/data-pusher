@@ -1,4 +1,4 @@
-const CSV = require('./../lib/csv')
+const CSV = require('./../../lib/connections/csv')
 const path = require('path')
 const fs = require('fs')
 
@@ -8,7 +8,7 @@ describe('csv', async () => {
   const csv = new CSV()
 
   test('can read CSV files in batches', async () => {
-    const file = path.join(__dirname, 'seeds', 'users.csv')
+    const file = path.join(__dirname, '..', 'seeds', 'users.csv')
     let data = []
     let handlerCalls = 0
     const handler = (chunk) => {
