@@ -43,11 +43,13 @@ const updateColumns = ['updated_at', 'created_at']
 const main = async () => {
   await etl.connect()
 
+  let promises = []
   const tables = await etl.connections.source.listTables()
   for (let i in tables) {
-    await copyTable(tables[i])
+    promises.push(copyTable(tables[i]))
   }
 
+  await Promise.all(promises)
   await etl.end()
 }
 
