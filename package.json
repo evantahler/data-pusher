@@ -1,15 +1,14 @@
 {
-  "name": "etl",
+  "name": "data-pusher",
   "version": "1.0.0",
   "description": "A Simple streaming ETL tool",
   "engines": {
     "node": "10.x.x"
   },
-  "main": "index.js",
+  "main": "./lib/etl.js",
   "scripts": {
     "pretest": "standard",
-    "test": "jest --runInBand",
-    "start": "node index.js"
+    "test": "jest --runInBand"
   },
   "author": "",
   "license": "UNLICENSED",

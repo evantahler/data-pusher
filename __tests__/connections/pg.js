@@ -121,8 +121,8 @@ describe('connection', async () => {
         })
       })
 
-      test('#getColumns', async () => {
-        let columns = await helper.connections.source.getColumns('users')
+      test('#listColumns', async () => {
+        let columns = await helper.connections.source.listColumns('users')
         expect(columns).toEqual(['id', 'created_at', 'email', 'first_name', 'last_name', 'updated_at'])
       })
 
