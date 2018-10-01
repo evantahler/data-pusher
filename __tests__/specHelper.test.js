@@ -7,7 +7,7 @@ describe('specHelper', async () => {
   afterAll(async () => { await helper.end() })
 
   test('it created database tables from seeds', async () => {
-    const tables = await helper.connections.source.queryTables()
+    const tables = await helper.connections.source.listTables()
     expect(tables.length).toEqual(4)
   })
 

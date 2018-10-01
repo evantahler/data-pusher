@@ -47,4 +47,11 @@ module.exports = class SpecHelper {
     await this.connections.source.dropTable(tableName)
     await this.csv.read(path.join(__dirname, 'seeds', file), handler)
   }
+
+  async clearDestinationDatabase () {
+    const tables = await this.connections.destination.listTables()
+    for (let i in tables) {
+      await this.connections.source.dropTable(tables[i])
+    }
+  }
 }
