@@ -13,15 +13,15 @@
   "author": "",
   "license": "UNLICENSED",
   "dependencies": {
-    "csv-stringify": "^4.0.1",
+    "csv-stringify": "^4.3.1",
     "moment": "^2.22.2",
     "pg": "^7.4.3",
     "pg-format": "^1.0.4",
     "winston": "^3.1.0"
   },
   "devDependencies": {
-    "csv-parse": "^3.0.0",
-    "jest": "^23.5.0",
+    "csv-parse": "^3.1.2",
+    "jest": "^23.6.0",
     "standard": "^12.0.1"
   },
   "standard": {
