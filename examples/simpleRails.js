@@ -19,8 +19,7 @@ const main = async () => {
   await etl.connect()
 
   let promises = []
-  const tables = ['riders']
-  // const tables = await etl.connections.source.listTables()
+  const tables = await etl.connections.source.listTables()
   for (let i in tables) {
     promises.push(copyTable(tables[i]))
   }
