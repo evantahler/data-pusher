@@ -219,6 +219,25 @@ describe('connection', async () => {
         expect(totalRows[0].id).toEqual(1)
         expect(totalRows[0].fish).toEqual('super-salmon')
       })
+
+      test('it will not create columns with all null values', async () => {
+        await helper.connections.source.write('fish', [{
+          id: 1,
+          fish: 'salmon',
+          weight: null,
+          created_at: new Date(),
+          updated_at: new Date()
+        }])
+
+        let totalRows = []
+        const handler = (rows) => { totalRows = totalRows.concat(rows) }
+        await helper.connections.source.read('fish', handler)
+        const row = totalRows[0]
+
+        expect(row.id).toEqual(1)
+        expect(row.fish).toEqual('salmon')
+        expect(row.weight).toBeUndefined()
+      })
     })
   })
 })
