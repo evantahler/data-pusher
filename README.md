@@ -23,8 +23,7 @@ With async/await, node is now the best way to program parallel processes which s
 Say you want to move all the tables with data newer than X from one database to another.  We will be demoing this with a Rails-like database, wher an `updated_at` column can be used to check for new or updated records.
 
 ```js
-const ETL = require('../lib/etl.js')
-// in your project, `const ETL = require('data-pusher')`
+const DataPusher = require('data-pusher')
 
 const connections = {
   source: {
@@ -37,7 +36,7 @@ const connections = {
   }
 }
 
-const etl = new ETL(connections)
+const etl = new DataPusher(connections)
 const updateColumns = ['updated_at', 'created_at']
 
 const main = async () => {
@@ -54,20 +53,20 @@ const main = async () => {
 }
 
 const copyTable = async (table) => {
-  let copyType = 'full'
+  let copyTypeMode = 'full'
   let tableUpdateCol
   const destinationTables = await etl.connections.destination.listTables()
   if (destinationTables.includes(table)) {
     const columns = await etl.connections.destination.listColumns(table)
     updateColumns.reverse().forEach((updateCol) => {
       if (columns.includes(updateCol)) {
-        copyType = 'update'
+        copyTypeMode = 'update'
         tableUpdateCol = updateCol
       }
     })
   }
 
-  if (copyType === 'full') {
+  if (copyTypeMode === 'full') {
     await etl.connections.source.read(table, async (data) => {
       await etl.connections.destination.write(table, data)
     })

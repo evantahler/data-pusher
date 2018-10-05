@@ -1,7 +1,7 @@
 const SpecHelper = require('./../specHelper')
 const helper = new SpecHelper()
 
-const ETL = require('./../../lib/etl.js')
+const DataPusher = require('./../../lib/dataPusher.js')
 const connections = {
   source: {
     type: 'pg',
@@ -13,7 +13,7 @@ const connections = {
   }
 }
 const logLevel = 'error'
-const etl = new ETL(connections, logLevel)
+const etl = new DataPusher(connections, logLevel)
 
 describe('integration', async () => {
   describe('postgres to postgres', async () => {

@@ -1,5 +1,5 @@
-const ETL = require('../lib/etl.js')
-// in your project, `const ETL = require('data-pusher')`
+const DataPusher = require('../lib/dataPusher.js')
+// in your project, `const DataPusher = require('data-pusher')`
 
 const connections = {
   source: {
@@ -12,14 +12,15 @@ const connections = {
   }
 }
 
-const etl = new ETL(connections)
+const etl = new DataPusher(connections)
 const updateColumns = ['updated_at', 'created_at']
 
 const main = async () => {
   await etl.connect()
 
   let promises = []
-  const tables = await etl.connections.source.listTables()
+  const tables = ['riders']
+  // const tables = await etl.connections.source.listTables()
   for (let i in tables) {
     promises.push(copyTable(tables[i]))
   }
@@ -29,20 +30,20 @@ const main = async () => {
 }
 
 const copyTable = async (table) => {
-  let copyType = 'full'
+  let copyTypeMode = 'full'
   let tableUpdateCol
   const destinationTables = await etl.connections.destination.listTables()
   if (destinationTables.includes(table)) {
     const columns = await etl.connections.destination.listColumns(table)
     updateColumns.reverse().forEach((updateCol) => {
       if (columns.includes(updateCol)) {
-        copyType = 'update'
+        copyTypeMode = 'update'
         tableUpdateCol = updateCol
       }
     })
   }
 
-  if (copyType === 'full') {
+  if (copyTypeMode === 'full') {
     await etl.connections.source.read(table, async (data) => {
       await etl.connections.destination.write(table, data)
     })
