@@ -20,7 +20,7 @@ This ETL assumes the following:
 With async/await, node is now the best way to program parallel processes which spend most of its time waiting for data.  An ETL is largely asking one source for data, doing some simple (read: non-cpu bound) transformation on that data, and then sending it off to another destination.  With promise flow control, this again becomes very simple!
 
 ## Example
-Say you want to move all the tables with data newer than X from one database to another.  We will be demoing this with a Rails-like database, wher an `updated_at` column can be used to check for new or updated records.
+Say you want to move all the tables with data newer than X from one database to another.  We will be demoing this with a Rails-like database, where an `updated_at` column can be used to check for new or updated records.
 
 ```js
 const DataPusher = require('data-pusher')
