@@ -50,8 +50,6 @@ module.exports = class SpecHelper {
 
   async clearDestinationDatabase () {
     const tables = await this.connections.destination.listTables()
-    for (let i in tables) {
-      await this.connections.source.dropTable(tables[i])
-    }
+    for (let i in tables) { await this.connections.destination.dropTable(tables[i]) }
   }
 }

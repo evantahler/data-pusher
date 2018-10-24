@@ -8,7 +8,8 @@
   "main": "./lib/etl.js",
   "scripts": {
     "pretest": "standard",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "testwatch": "jest --runInBand --watch"
   },
   "author": "",
   "license": "UNLICENSED",
@@ -40,6 +41,7 @@
   "jest": {
     "testPathIgnorePatterns": [
       "<rootDir>/__tests__/seeds",
+      "<rootDir>/__tests__/transformations",
       "<rootDir>/__tests__/specHelper.js"
     ]
   }

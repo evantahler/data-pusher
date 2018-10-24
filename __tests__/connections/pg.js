@@ -239,5 +239,21 @@ describe('connection', async () => {
         expect(row.weight).toBeUndefined()
       })
     })
+
+    describe('sql files', () => {
+      afterAll(async () => { await helper.clearDestinationDatabase() })
+
+      test('it can excecute arbitrary SQL files on the databse', async () => {
+        await helper.connections.destination.execSqlFile(`${__dirname}/../transformations/user_email_suffix.sql`)
+        const columns = await helper.connections.destination.listColumns('users')
+        expect(columns).toEqual(['id', 'created_at', 'email', 'emailsuffix', 'first_name', 'last_name', 'updated_at'])
+
+        let totalRows = []
+        const handler = (rows) => { totalRows = totalRows.concat(rows) }
+        await helper.connections.destination.read('users', handler)
+        const row = totalRows[0]
+        expect(row.emailsuffix).toEqual('example.com')
+      })
+    })
   })
 })
