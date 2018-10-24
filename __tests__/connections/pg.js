@@ -241,16 +241,17 @@ describe('connection', async () => {
     })
 
     describe('sql files', () => {
-      afterAll(async () => { await helper.clearDestinationDatabase() })
+      beforeAll(async () => { await helper.seed() })
+      afterAll(async () => { await helper.end() })
 
       test('it can excecute arbitrary SQL files on the databse', async () => {
-        await helper.connections.destination.execSqlFile(`${__dirname}/../transformations/user_email_suffix.sql`)
-        const columns = await helper.connections.destination.listColumns('users')
+        await helper.connections.source.execSqlFile(`${__dirname}/../transformations/user_email_suffix.sql`)
+        const columns = await helper.connections.source.listColumns('users')
         expect(columns).toEqual(['id', 'created_at', 'email', 'emailsuffix', 'first_name', 'last_name', 'updated_at'])
 
         let totalRows = []
         const handler = (rows) => { totalRows = totalRows.concat(rows) }
-        await helper.connections.destination.read('users', handler)
+        await helper.connections.source.read('users', handler)
         const row = totalRows[0]
         expect(row.emailsuffix).toEqual('example.com')
       })
